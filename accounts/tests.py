@@ -7,8 +7,8 @@ class RoleModelTest(TestCase):
         self.role = Role(
             role = "USER"
             )
-        
-    def test_model_can_create_user(self):
+
+    def test_model_can_create_role(self):
         old_count = Role.objects.count()
         self.role.save()
         new_count = Role.objects.count()
@@ -25,7 +25,7 @@ class UserModelTest(TestCase):
             password = self.user_password,
             nickname = self.user_nickname,
             )
-        
+
     def test_model_can_create_user(self):
         old_count = User.objects.count()
         self.user.save()
