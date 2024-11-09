@@ -1,6 +1,9 @@
 from django.test import TestCase
 from .models import User, Role
 
+from rest_framework.test import APIClient
+from rest_framework import status
+
 
 class RoleModelTest(TestCase):
     def setUp(self):
@@ -31,3 +34,19 @@ class UserModelTest(TestCase):
         self.user.save()
         new_count = User.objects.count()
         self.assertNotEqual(old_count, new_count)
+
+class SignupViewTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user_data = {
+            "username" : "test",
+            "password" : "testpw123",
+            "password2" : "testpw123",
+            "nickname" : "test",
+        }
+        self.response = self.client.post('/signup/',
+                                        self.user_data,
+                                        format="json")
+
+    def test_api_can_create_user(self):
+        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
