@@ -7,7 +7,7 @@ from accounts.models import Role, UserRole
 
 User = get_user_model()
 
-class SignupForm(serializers.Serializer):
+class SignupSerializer(serializers.Serializer):
     username = serializers.CharField(
         required=True, 
         validators=[UniqueValidator(queryset=User.objects.all())]
