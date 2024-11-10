@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
+from accounts.models import Role, UserRole
+
 User = get_user_model()
 
 class SignupForm(serializers.Serializer):
@@ -15,18 +17,20 @@ class SignupForm(serializers.Serializer):
         write_only=True,
         validators=[validate_password]
         )
-    password2 = serializers.CharField(required=True, write_only=True)
     nickname = serializers.CharField(required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password2', 'nickname')
+        fields = ('username', 'password', 'nickname')
 
-    def validate(self, data):
-        if data['password'] != data['password2']:
-            raise serializers.ValidationError(
-                {"password": "비밀번호가 일치하지 않습니다."})
-        return data
-    
     def create(self, validated_data):
-        return super().create(validated_data)
+        # 사용자 생성
+        user = User.objects.create_user(**validated_data)
+        
+        # 'USER' 역할 가져오기 (없으면 생성)
+        user_role, created = Role.objects.get_or_create(role='USER')
+        
+        # UserRole 중계 테이블에 사용자와 역할 추가
+        UserRole.objects.create(user=user, role=user_role)
+        
+        return user
