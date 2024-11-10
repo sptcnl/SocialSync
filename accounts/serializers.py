@@ -49,7 +49,3 @@ class SignupSerializer(serializers.Serializer):
         UserRole.objects.create(user=user, role=user_role)
         
         return user
-
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True, write_only=True)
