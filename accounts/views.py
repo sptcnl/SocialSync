@@ -1,8 +1,9 @@
 from rest_framework import generics
 from django.contrib.auth import get_user_model, authenticate
-from .serializers import SignupSerializer, LoginSerializer
+from .serializers import SignupSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -12,9 +13,7 @@ class SignupView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = SignupSerializer
 
-class LoginView(generics.GenericAPIView):
-    serializer_class = LoginSerializer
-
+class LoginView(APIView):
     def post(self, request):
         user = authenticate(**request.data)
 
