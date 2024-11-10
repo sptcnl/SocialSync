@@ -13,7 +13,7 @@ class SignupForm(serializers.Serializer):
     password = serializers.CharField(
         required=True, 
         write_only=True,
-        vaildators=[validate_password]
+        validators=[validate_password]
         )
     password2 = serializers.CharField(required=True, write_only=True)
     nickname = serializers.CharField(required=True)
