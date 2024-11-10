@@ -1,3 +1,21 @@
-from django.shortcuts import render
+from rest_framework import generics, status
+from django.contrib.auth import get_user_model, authenticate
+from .serializers import SignupSerializer
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-# Create your views here.
+from rest_framework_simplejwt.tokens import RefreshToken
+
+User = get_user_model()
+
+class SignupView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = SignupSerializer
+
+class LoginView(APIView):
+    def post(self, request):
+        user = authenticate(**request.data)
+
+        refresh = RefreshToken.for_user(user)
+        return Response({'refresh_token': str(refresh),
+                        'access_token': str(refresh.access_token)}, status=status.HTTP_200_OK)
