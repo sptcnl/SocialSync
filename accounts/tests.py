@@ -35,17 +35,32 @@ class UserModelTest(TestCase):
         new_count = User.objects.count()
         self.assertNotEqual(old_count, new_count)
 
-class SignupViewTest(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-        self.user_data = {
-            "username" : "test",
-            "password" : "testpw123",
-            "nickname" : "test",
-        }
-        self.response = self.client.post('/accounts/signup/',
-                                        self.user_data,
-                                        format="json")
+class ViewTest(TestCase):
+    class SignupViewTest(TestCase):
+        def setUp(self):
+            self.client = APIClient()
+            self.user_data = {
+                "username" : "test",
+                "password" : "testpw123",
+                "nickname" : "test",
+            }
+            self.response = self.client.post('/accounts/signup/',
+                                            self.user_data,
+                                            format="json")
 
-    def test_api_can_create_user(self):
-        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
+        def test_api_can_create_user(self):
+            self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
+
+    class LoginViewTest(TestCase):
+        def setUp(self):
+            self.client = APIClient()
+            self.user_data = {
+                "username" : "test",
+                "password" : "testpw123",
+            }
+            self.response = self.client.post('/accounts/login/',
+                                            self.user_data,
+                                            format="json")
+
+        def test_api_can_login(self):
+            self.assertEqual(self.response.status_code, status.HTTP_200_OK)
