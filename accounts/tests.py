@@ -41,10 +41,9 @@ class SignupViewTest(TestCase):
         self.user_data = {
             "username" : "test",
             "password" : "testpw123",
-            "password2" : "testpw123",
             "nickname" : "test",
         }
-        self.response = self.client.post('/signup/',
+        self.response = self.client.post('/accounts/signup/',
                                         self.user_data,
                                         format="json")
 
