@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     # Local_apps
     'accounts',
+    'posts',
 ]
 
 MIDDLEWARE = [
